@@ -8,7 +8,7 @@ setup(
         'psycopg2-binary',  # For PostgreSQL connection
         'pandas',           # For data processing
     ],
-    author='Your Name',
+    author='Rahul Saini',
     description='A Sandhi-aware Sanskrit pre-processor for LLMs',
     python_requires='>=3.8',
 )

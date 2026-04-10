@@ -30,37 +30,39 @@ jobs:
       - name: Log Success
         run: echo "Model successfully retrained and pushed to Hugging Face."
       
+      
       - name: Post Performance Report
-      uses: allthatjazzleo/actions-pull-request-add-comment@master
-  with:
-    # Use dynamic data from your training logs
-    message: |
-      ### 📈 Model Retraining Report
-      The automated retraining session for the **Sanskrit Organizer** is complete.
+        uses: allthatjazzleo/actions-pull-request-add-comment@master
+        with:
+          # Use dynamic data from your training logs
+          message: |
+            ### 📈 Model Retraining Report
+            The automated retraining session for the **Sanskrit Organizer** is complete.
 
       
-      | Metric | Before | After | Improvement |
-      | :--- | :--- | :--- | :--- |
-      | **Accuracy** | 72% | **89%** | +17% |
-      | **Confidence** | 0.62 | **0.84** | +0.22 |
+            | Metric | Before | After | Improvement |
+            | :--- | :--- | :--- | :--- |
+            | **Accuracy** | 72% | **89%** | +17% |
+            | **Confidence** | 0.62 | **0.84** | +0.22 |
       
-      *Status: Ready for deployment to local SLM.*
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    ###
-    - name: Conditional Auto-Merge
-  env:
-    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    ACCURACY: ${{ steps.train.outputs.accuracy }} # Assume training step outputs this
-  run: |
-    THRESHOLD=85
-    if [ "$ACCURACY" -ge "$THRESHOLD" ]; then
-      echo "✅ Threshold met ($ACCURACY%). Merging PR..."
-      gh pr merge ${{ github.event.pull_request.number }} --auto --squash --delete-branch
-    else
-      echo "⚠️ Accuracy too low ($ACCURACY%). Manual review required."
-      exit 1
-    fi
+            *Status: Ready for deployment to local SLM.*
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Python
+      ###
+      
+      - name: Conditional Auto-Merge
+        env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ACCURACY: ${{ steps.train.outputs.accuracy }} # Assume training step outputs this
+        run: |
+         THRESHOLD=85
+         if [ "$ACCURACY" -ge "$THRESHOLD" ]; then
+         echo "✅ Threshold met ($ACCURACY%). Merging PR..."
+         gh pr merge ${{ github.event.pull_request.number }} --auto --squash --delete-branch
+         else
+         echo "⚠️ Accuracy too low ($ACCURACY%). Manual review required."
+         exit 1
+         fi
 
 ##
 

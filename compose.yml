@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Local Sanskrit Dictionary Database
+  sanskrit-db:
+    image: postgres:15
+    container_name: sanskrit-lexicon
+    environment:
+      POSTGRES_USER: sanskrit_user
+      POSTGRES_PASSWORD: securepassword
+      POSTGRES_DB: dictionary_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      # Auto-load dictionary data on first startup
+      - ./init-db:/docker-entrypoint-initdb.d 
+
+  # The Sanskrit Processor (SLM Organizer)
+  processor:
+    build: .
+    depends_on:
+      - sanskrit-db
+    volumes:
+      - ./raw_sanskrit:/app/raw_sanskrit
+      - ./tokenized_sanskrit:/app/tokenized_sanskrit
+    environment:
+      DB_HOST: sanskrit-db
+      DB_USER: sanskrit_user
+      DB_PASS: securepassword
+

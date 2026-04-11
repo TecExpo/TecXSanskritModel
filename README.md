@@ -2,7 +2,7 @@
 TecX Sanskrit Model
 
 ```
-sanskrit_project/
+TecXSanskritModel/
 ├── setup.py                # Configuration for the library
 ├── README.md               # Documentation for users
 ├── requirements.txt        # External dependencies

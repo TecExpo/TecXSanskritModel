@@ -57,4 +57,4 @@ trainer.train() # This starts the actual fine-tuning
 6. Save your New Model
 Once finished, save your customized model to use it later without retraining. 
 """
-trainer.save_model("./my-custom-sanskrit-model")
+trainer.save_model("./tecx-sanskrit-model")
